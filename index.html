@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C3CNXVP0MW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-C3CNXVP0MW');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vypracovanie technického zadania pre pozíciu Fullstack Developer - Lucia Danielová">
+    <title>Tech Assignment | Lucia Danielová</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+
+    <div class="top-banner">
+        🛡️ Technické Demo | Analytika a UX udalosti sú monitorované cez Google Analytics (GA4)
+    </div>
+
+    <button class="theme-toggle" onclick="App.toggleTheme()" aria-label="Prepnúť vzhľad">🌓</button>
+
+    <div id="toast-container"></div>
+
+    <div class="container">
+        <header>
+            <h1>Fullstack Solution</h1>
+            <p class="sub-header-text">Vypracovala: <strong>Lucia Danielová</strong></p>
+        </header>
+
+        <section>
+            <h2>1. Algoritmická úloha (FizzBuzz Variant)</h2>
+            <div class="task-card">
+                <strong>Zadanie:</strong> Iterujte čísla 1-100. Deliteľné 3 = „Super“, deliteľné 5 = „Faktura“, deliteľné 15 = „SuperFaktura“, inak samotné číslo.
+            </div>
+            
+            <div class="solution-area">
+                <div class="flex-center-wrap">
+                    <input type="text" id="numInput" placeholder="Vyskúšajte zadať číslo..." oninput="App.calcFizzBuzz(this.value)" autocomplete="off">
+                    <div id="calcResult" class="fizzbuzz-display">---</div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-outline" onclick="App.toggleCode('code1', this)">{'<>'} Zobraziť kód</button>
+                    <button class="btn btn-primary" onclick="App.runSequence()">Spustiť výpis 1-100</button>
+                </div>
+
+                <div id="code1" class="output-box" style="border-left: 4px solid var(--sf-orange);">
+// Implementácia s optimalizovanou logikou (priorita najprísnejšej podmienky)
+for (let i = 1; i <= 100; i++) {
+    if (i % 15 === 0) console.log("SuperFaktura");
+    else if (i % 3 === 0) console.log("Super");
+    else if (i % 5 === 0) console.log("Faktura");
+    else console.log(i);
+}</div>
+                <div id="out100" class="output-box" style="background: var(--bg-task); color: var(--text-main); border: 1px solid var(--border-light);"></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. Databázová úloha (Duplicity & Výkon)</h2>
+            <div class="task-card">
+                <strong>Zadanie:</strong> SQL dotaz, ktorý vyberie všetky riadky z tabuľky "duplicates", ktoré majú v stĺpci "value" duplicitnú hodnotu.
+            </div>
+
+            <div class="solution-area">
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="App.toggleCode('code2', this)">Zobraziť SQL Query</button>
+                    <button class="btn btn-outline" onclick="App.toggleCode('map2', this)">Architektúra pre 1M+ dát</button>
+                </div>
+                
+                <div id="code2" class="output-box" style="border-left: 4px solid var(--sf-blue);">
+-- Využitie Subquery s klauzulou HAVING pre presnú identifikáciu
+SELECT id, value 
+FROM duplicates 
+WHERE value IN (
+    SELECT value 
+    FROM duplicates 
+    GROUP BY value 
+    HAVING COUNT(*) > 1
+) 
+ORDER BY value;</div>
+
+                <div id="map2" class="output-box" style="background: var(--bg-task); color: var(--text-main); border: 1px solid var(--border-light);">
+<strong>Strategický plán optimalizácie (Enterprise Scale):</strong>
+
+1. <strong>Indexácia (B-Tree):</strong>
+   CREATE INDEX idx_duplicates_value ON duplicates(value);
+   - Zníženie časovej zložitosti skenovania tabuľky.
+
+2. <strong>Query Rewrite (EXISTS klauzula):</strong>
+   Pri obrovských objemoch je často efektívnejšie nahradiť 'IN' za korelovaný poddotaz s 'EXISTS', čo optimalizátoru databázy umožní lepšie plánovanie pamäte.
+
+3. <strong>Asynchronous Batch Processing:</strong>
+   Mazanie alebo úprava miliónov duplikátov naraz zamkne tabuľku (Table Lock). Riešením je spracovanie v dávkach (napr. LIMIT 1000) cez Cron.</div>
+
+                <table class="sql-table" id="dbTable">
+                    <thead><tr><th>id</th><th>value</th></tr></thead>
+                    <tbody>
+                        <tr><td>2</td><td>2</td></tr><tr><td>4</td><td>2</td></tr>
+                        <tr><td>5</td><td>4</td></tr><tr><td>6</td><td>4</td></tr>
+                        <tr><td>10</td><td>2</td></tr>
+                    </tbody>
+                </table>
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="App.exportCSV('dbTable', 'duplikaty.csv')">💾 Stiahnuť .CSV</button>
+                    <button class="btn btn-outline" onclick="App.copyForSheets('dbTable')">📊 Kopírovať do schránky (Sheets)</button>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. PHP & SOLID Princípy (ARES API)</h2>
+            <div class="task-card">
+                <strong>Zadanie:</strong> PHP knižnica pre ARES API. Zameranie na architektonickú čistotu, testovateľnosť a SOLID princípy.
+            </div>
+
+            <div class="solution-area">
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <input type="text" id="icoField" value="01569651" onkeyup="if(event.key === 'Enter') App.fetchAres()" placeholder="Zadajte IČO">
+                    <button class="btn btn-primary" onclick="App.fetchAres()" id="aresBtn">
+                        Vyhľadať <div class="loader" id="aresLoader"></div>
+                    </button>
+                </div>
+                
+                <div id="aresMsg" class="mt-15"></div>
+                
+                <table class="sql-table" id="aresTable" style="display: none; margin-top: 20px;">
+                    <thead>
+                        <tr><th>IČO</th><th>Obchodné meno</th><th>Sídlo</th><th>Právna forma</th></tr>
+                    </thead>
+                    <tbody id="aresTableBody"></tbody>
+                </table>
+                
+                <div class="btn-group" id="aresExportBtns" style="display: none; margin-top: 15px;">
+                    <button class="btn btn-success" onclick="App.exportCSV('aresTable', 'ares_vysledky.csv')">💾 Stiahnuť výsledky (.CSV)</button>
+                    <button class="btn btn-outline" onclick="App.copyForSheets('aresTable')">📊 Kopírovať do schránky</button>
+                </div>
+                
+                <div class="btn-group" style="margin-top: 30px;">
+                    <button class="btn btn-outline" onclick="App.toggleCode('code3', this)">{'<>'} Zobraziť návrh architektúry (PHP)</button>
+                </div>
+                
+                <div id="code3" class="output-box" style="border-left: 4px solid var(--success);">
+&lt;?php
+declare(strict_types=1);
+
+/**
+ * 1. Dependency Inversion (Interface)
+ * Umožňuje jednoduchý mocking pri Unit testoch a vymeniteľnosť registrov.
+ */
+interface CompanyRegistryInterface {
+    public function getCompanyByIco(string $ico): ?CompanyDTO;
+}
+
+/**
+ * 2. Single Responsibility (DTO)
+ * Definuje presný kontrakt dát. Predchádza posielaniu neštruktúrovaných polí.
+ */
+readonly class CompanyDTO {
+    public function __construct(
+        public string $ico,
+        public string $companyName,
+        public string $address
+    ) {}
+}
+
+/**
+ * 3. Liskov Substitution & Open/Closed
+ * Samotná implementácia pre ARES.
+ */
+class AresRegistryClient implements CompanyRegistryInterface {
+    
+    // Injectujeme HTTP klienta (napr. Guzzle) pre jednoduchšie testovanie
+    public function __construct(private HttpClientInterface $httpClient) {}
+
+    public function getCompanyByIco(string $ico): ?CompanyDTO {
+        if (!preg_match('/^\d{8}$/', $ico)) {
+            throw new InvalidArgumentException("Neplatný formát IČO.");
+        }
+        
+        // Logika volania API a mapovania JSONu na CompanyDTO objekt
+    }
+}</div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
